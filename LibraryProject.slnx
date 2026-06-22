@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="LibraryApi/LibraryApi.csproj" />
+  <Project Path="LibraryCore/LibraryCore.csproj" />
+  <Project Path="LibraryDataAccess/LibraryDataAccess.csproj" />
+  <Project Path="LibraryService/LibraryService.csproj" />
+</Solution>

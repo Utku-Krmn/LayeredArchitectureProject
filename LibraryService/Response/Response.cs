@@ -1,0 +1,28 @@
+
+using LibraryService.Response;
+public class Response 
+{
+    public bool IsSuccess { get; protected set; }
+    public string? Message { get; protected set; }
+    public T? Data { get; set; }
+
+    public Response(bool isSuccess, string? message)
+    {
+        IsSuccess = isSuccess;
+        Message = message;
+    }
+
+    public static Response Success(string? message = "")
+    {
+        return new Response(true, message);
+    }
+
+    public static Response Error(string? message = "")
+    {
+        return new Response(false, message);
+    }
+}
+
+public class T
+{
+}
