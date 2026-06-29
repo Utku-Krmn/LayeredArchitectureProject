@@ -112,8 +112,34 @@ public class CategoryService : ICategoryService
       
     }
 
-    public Task<IResponse<Category>> Update(Category category)
+    public Task<IResponse<CategoryUpdateDto>> Update(CategoryUpdateDto categoryupdatedto)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var categoryentity = _categoryRepository.GetByIdAsync(categoryupdatedto.Id).Result;
+            if (categoryentity == null)
+            {
+                return Task.FromResult<IResponse<CategoryUpdateDto>>(ResponseGeneric<CategoryUpdateDto>.Error("Category cannot be null."));
+            }
+
+            
+            if (categoryupdatedto.Name != null)
+            {
+                categoryentity.Name = categoryupdatedto.Name;
+            }
+
+             if (categoryupdatedto.Description != null)
+            {
+                categoryentity.Description = categoryupdatedto.Description;
+            }
+            
+            _categoryRepository.Update(categoryentity);
+
+            return Task.FromResult<IResponse<CategoryUpdateDto>>(ResponseGeneric<CategoryUpdateDto>.Success(categoryupdatedto, "Category updated successfully."));
+        }
+        catch (Exception ex)
+        {
+            return Task.FromResult<IResponse<CategoryUpdateDto>>(ResponseGeneric<CategoryUpdateDto>.Error($"An error occurred while updating the category: {ex.Message}"));
+        }
     }
 }

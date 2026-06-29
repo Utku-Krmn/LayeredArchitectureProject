@@ -2,9 +2,17 @@ using LibraryCore;
 using LibraryDataAccess;
 using LibraryDataAccess.Repositories;
 using LibraryService.Interfaces;
+using Serilog;
 
-
+// Log Configuration
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.File("Logs/log-.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+    
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Logging.ClearProviders(); // Clear default logging providers
+builder.Host.UseSerilog(); // Use Serilog for logging
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();

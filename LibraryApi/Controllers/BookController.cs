@@ -58,7 +58,7 @@ namespace LibraryApi.Controllers
         return Ok(result);
     }
 
-    [HttpPut("GetById")]
+    [HttpGet("GetById")]
     public IActionResult GetById(int id)
     {
         var result = _bookService.GetById(id);
@@ -70,6 +70,47 @@ namespace LibraryApi.Controllers
 
         return Ok(result);
     }
-    
+
+    [HttpGet("GetBooksByCategoryId")]
+    public IActionResult GetBooksByCategoryId(int categoryId)
+    {
+        var result = _bookService.GetBooksByCategoryId(categoryId);
+
+        if(!result.IsSuccess)
+        {
+            return NotFound("No books found with the given category.");
+        }
+
+        return Ok(result);
+    }
+
+    [HttpGet("GetBooksByAuthorId")]
+    public IActionResult GetBooksByAuthorId(int authorId)
+    {
+        var result = _bookService.GetBooksByAuthorId(authorId);
+        if(!result.IsSuccess)
+        {
+            return NotFound("No books found with the given author.");
+        }
+        return Ok(result);
+    }
+
+    [HttpPut("Update")]
+    public IActionResult Update([FromBody] BookUpdateDto bookupdatedto)
+    {
+        if (bookupdatedto == null)
+        {
+            return BadRequest("Book cannot be null.");
+        }
+
+        var result = _bookService.Update(bookupdatedto);
+
+        if (!result.Result.IsSuccess)
+        {
+            return BadRequest("Book could not be updated.");
+        }
+
+        return Ok(result);
+    }
   }
-} 
+}
