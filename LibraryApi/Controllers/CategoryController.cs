@@ -78,11 +78,25 @@ namespace LibraryApi.Controllers
             return NotFound("Category not found with the provided name.");
         }
 
-           
+        [HttpPut("Update")]
+         public IActionResult Update([FromBody] CategoryUpdateDto categoryupdatedto)
+        {
+            if (categoryupdatedto == null)
+            {
+                return BadRequest("Category cannot be null.");
+            }
 
+            var result = _categoryService.Update(categoryupdatedto);
+            if (!result.Result.IsSuccess)
+            {
+                return BadRequest("Category cannot be updated.");
+            }
 
+            return Ok(result);
+        } 
 
+        
+
+        
     }
-
-
 }
