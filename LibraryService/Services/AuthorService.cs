@@ -119,8 +119,44 @@ public class AuthorService : IAuthorService
   
     }
 
-    public Task<IResponse<Author>> Update(Author author)
+    public Task<IResponse<AuthorUpdateDto>> Update(AuthorUpdateDto authorUpdateDto)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var authorentity = _authorRepository.GetByIdAsync(authorUpdateDto.Id).Result;
+            if (authorentity == null)
+            {
+                return Task.FromResult<IResponse<AuthorUpdateDto>>(ResponseGeneric<AuthorUpdateDto>.Error("Author not found."));
+            }
+            if(authorUpdateDto.Name != null)
+            {
+                authorentity.Name = authorUpdateDto.Name;
+            }
+            if(authorUpdateDto.Surname != null)
+            {
+                authorentity.Surname = authorUpdateDto.Surname;
+            }
+            if(authorUpdateDto.PlaceOfBirth != null)
+            {
+                authorentity.PlaceOfBirth = authorUpdateDto.PlaceOfBirth;
+            }
+            if(authorUpdateDto.BirthYear != 0)
+            {
+                authorentity.BirthYear = authorUpdateDto.BirthYear;
+            }
+            if(authorUpdateDto.Biography != null)
+            {
+                authorentity.Biography = authorUpdateDto.Biography;
+            }
+            
+            _authorRepository.Update(authorentity);
+
+            return Task.FromResult<IResponse<AuthorUpdateDto>>(ResponseGeneric<AuthorUpdateDto>.Success(authorUpdateDto, "Author updated successfully."));
+        }
+
+        catch (Exception ex)
+        {
+            return Task.FromResult<IResponse<AuthorUpdateDto>>(ResponseGeneric<AuthorUpdateDto>.Error($"An error occurred while updating the author: {ex.Message}"));
+        }
     }
 }

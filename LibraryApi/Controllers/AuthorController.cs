@@ -70,5 +70,23 @@ namespace LibraryApi.Controllers
 
             return Ok(result);
         }
+
+        [HttpPut("Update")]
+        public IActionResult Update([FromBody] AuthorUpdateDto authorUpdateDto)
+        {
+            if(authorUpdateDto == null)
+            {
+                return BadRequest("Author cannot be null.");
+            }
+
+            var result = _authorService.Update(authorUpdateDto);
+
+            if(!result.Result.IsSuccess)
+            {
+                return BadRequest("Author could not be updated.");
+            }
+
+            return Ok(result.Result.Message);
+        }
     }
 }
